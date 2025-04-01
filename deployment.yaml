@@ -17,3 +17,5 @@ spec:
         image: <IMAGE_URL>:<IMAGE_TAG>  # 占位符，将在Pipeline中替换
         ports:
         - containerPort: 8080
+      imagePullSecrets:
+      - name: docker-creds
