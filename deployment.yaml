@@ -1,0 +1,13 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: my-app
+spec:
+  replicas: 1
+  template:
+    spec:
+      containers:
+      - name: app
+        image: <IMAGE_URL>:<IMAGE_TAG>  # 占位符，将在Pipeline中替换
+        ports:
+        - containerPort: 8080
