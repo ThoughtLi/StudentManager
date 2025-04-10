@@ -1,21 +1,33 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: my-app
+  name: {{appName}}
+  labels:
+    app: {{appName}}
 spec:
+  replicas: 1
   selector:
     matchLabels:
-      app: my-app  # 定义 selector
-  replicas: 1
+      app: {{appName}}
   template:
     metadata:
       labels:
-        app: my-app  # 必须与 selector.matchLabels 一致
+        app: {{appName}}
+        version: v1
     spec:
       containers:
-      - name: app
-        image: <IMAGE_URL>:<IMAGE_TAG>  # 占位符，将在Pipeline中替换
-        ports:
-        - containerPort: 8080
+        - name: {{appName}}
+          # 指定SWR中的镜像地址
+          image: {{repositoryUrl}}/{{orgName}}/{{imageName}}:{{tagVersion}}
+          ports:
+            - containerPort: {{serverPort}}
+          # 声明Pod的资源（Request和Limit）请根据应用的实际需求修改
+          resources:
+            requests:
+              memory: {{requestsMemory}}
+              cpu: {{requestsCpu}}
+            limits:
+              memory: {{limitsMemory}}
+              cpu: {{limitsCpu}}
       imagePullSecrets:
-      - name: docker-creds
+        - name: default-secret
